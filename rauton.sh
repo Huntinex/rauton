@@ -31,7 +31,6 @@ recon (){
 	mkdir fingerprint;
 	cd fingerprint;
 	if [ "$2" = "wild" ]; then
-	echo "${yellow}[#] Finding Hosts with ${red}Censys";
 	cat valid_domains > allhosts
 	echo "${yellow}[#] Web FingerPrinting";
 	gowitness file -f ../allhosts
@@ -40,18 +39,22 @@ recon (){
 	fi
 	# jsfiles
 	# js ./fingerprint/alivejs.txt
+	echo "${yellow}[#] Finding ${red}Urls";
+	mkdir wayback-data
+	if [ "$2" = "wild" ];
+	then
+		getallurls -subs $1 | tee wayback-data/waybackurls.txt
+		echo $1 | waybackurls | tee -a wayback-data/waybackurls.txt
+	else
+		getallurls $1 | tee wayback-data/waybackurls.txt
+		echo $1 | waybackurls -no-subs | tee -a wayback-data/waybackurls.txt
+	fi
+	echo $1 | waybackurls
 	echo "${yellow}[#] Finding ${red}Js Files";
-	if [ "$2" = "wild" ];then
-		getallurls -subs $1 |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >> js.txt ; cat js.txt | anti-burl | awk '{print $4}' | sort -u >> alivejs.txt
+	
+		cat urls.txt |grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >> js.txt ; cat js.txt | anti-burl | awk '{print $4}' | sort -u >> alivejs.txt
 		getjs --input ../valid_domains >> alivejs.txt
 		cat alivejs.txt 
-	else
-		getallurls $1 | grep -iE '\.js'|grep -iEv '(\.jsp|\.json)' >> js.txt ; cat js.txt | anti-burl | awk '{print $4}' | sort -u >> alivejs.txt
-		getjs --url $1 >> alivejs.txt
-		cat alivejs.txt 
-	fi
-	# cidr 
-	# CIDR ./fingerprint/CIDR.txt
 	echo "${yellow}[#] Finding ${red}CIDR";
 	echo "${green}";
 	if [ "$2" = "wild" ]; then
@@ -63,8 +66,15 @@ recon (){
 	# nmap ./fingerpring/network.txt
 	echo "${yellow}[#] Finding ${red}Open Ports";
 	echo "${blue}";
+	
+	if [ "$2" = "wild" ]; then
+	cat subs | nmap -sV -T3 -Pn -p3868,3366,8443,8080,9443,9091,3000,8000,5900,8081,6000,10000,8181,3306,5000,4000,8888,5432,15672,9999,161,4044,7077,4040,9000,8089,443,7447,7080,8880,8983,5673,7443,19000,19080 -iL /dev/stdin |  grep -E 'open|filtered|closed' > network.txt
+	else
 	nmap -sV -T3 -Pn -p3868,3366,8443,8080,9443,9091,3000,8000,5900,8081,6000,10000,8181,3306,5000,4000,8888,5432,15672,9999,161,4044,7077,4040,9000,8089,443,7447,7080,8880,8983,5673,7443,19000,19080 $1 |  grep -E 'open|filtered|closed' > network.txt
-	echo "${green}";cat network.txt
+	fi
+	
+	echo "${green}"
+	cat network.txt
 	# httpscan
 	echo "${yellow}[#] Starting ${red}HTTP Scan";
 	if [ "$2" = "wild" ]; then
@@ -75,13 +85,7 @@ recon (){
 	echo "${green}";
 	cat httpscan
 	#waybackrecon 
-	echo "${yellow}[#] Finding ${red}Wayback Data";
-	mkdir wayback-data
-	if [ "$2" = "wild" ]; then
-		getallurls -subs $1 | grep -v -e .css -e .jpg -e .jpeg -e png -e ico -e svg > wayback-data/waybackurls.txt
-	else
-		getallurls $1 | grep -v -e .css -e .jpg -e .jpeg -e png -e ico -e svg > wayback-data/waybackurls.txt
-	fi
+	
 	cat wayback-data/waybackurls.txt  | sort -u | unfurl --unique keys > wayback-data/paramlist.txt
 	[ -s wayback-data/paramlist.txt ]
 
