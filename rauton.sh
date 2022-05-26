@@ -165,3 +165,5 @@ wild|-wild|--wildcard|--wild|-w|wildcard|-wildcard)
 	recon $1 "wild"
 
 ;;
+
+esac
