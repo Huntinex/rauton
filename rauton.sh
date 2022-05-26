@@ -84,8 +84,6 @@ recon (){
 	fi
 	echo "${green}";
 	cat httpscan
-	#waybackrecon 
-	
 	cat wayback-data/waybackurls.txt  | sort -u | unfurl --unique keys > wayback-data/paramlist.txt
 	[ -s wayback-data/paramlist.txt ]
 
@@ -111,9 +109,11 @@ recon (){
 	# nucleitest 
 	echo "${yellow}[#] Scan With ${red}Nuclei";
 	if [ "$2" = "wild" ]; then
-		cat allhosts | nuclei -o nuclei_output -silent
-	else
-		echo $1 | nuclei -o nuclei_output -silent
+		cat allhosts | nuclei -o nuclei_recon_output -silent -s info
+		cat allhosts | nuclei -o nuclei_output -silent -s low,medium,high,critical
+	else 
+		echo $1 | nuclei -o nuclei_recon_output -silent -s info
+		echo $1 | nuclei -o nuclei_output -silent -s low,medium,high,critical
 	fi
 	# dirfuzz
 	mkdir fuzzing;
@@ -130,7 +130,6 @@ recon (){
 	nmap --script ssl-enum-ciphers -p 443 $1
 	echo "  ${blue}[#] Heartbleed : "
 	sslscan $1 | grep heartbleed
-
 	# getips
 	if [ "$2" = "wild" ]; then
 	echo "${yellow}[#] Getting Subdomains ${red}IPs";
@@ -144,23 +143,25 @@ recon (){
 
 }
 
-if [ "$1" == "-single" ]
-then
+case "$1" in
+single|-single|--single|-s)
 	echo "${green}[+] Starting Scan On ${yellow}$2 ${green}in ${red}Single ${green}Mode";
 	mkdir $2
 	cd $2
 	recon $2 "single"
-elif [ "$1" == "-wild" ]
-then
+	
+;;
+wild|-wild|--wildcard|--wild|-w|wildcard|-wildcard)
 	echo "${green}[+] Starting Scan On ${yellow}$2 ${green}in ${red}Wildcard ${green}Mode";
 	mkdir $2 2>/dev/null
 	cd $2
 	recon $2 "wild"
-else
+;;
+*)
 	echo "${red}[-] Not Any Mode Selected !";
-	echo "${green}[+] Starting Scan On ${yellow}$1 ${green}in ${red}Default (Single) ${green}Mode";
+	echo "${green}[+] Starting Scan On ${yellow}$1 ${green}in ${red}Wildcard (Default) ${green}Mode";
 	mkdir $1 2>/dev/null
 	cd $1
-	recon $1 "single"
+	recon $1 "wild"
 
-fi 
+;;
