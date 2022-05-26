@@ -15,7 +15,7 @@ else
 apt install nmap
 go get github.com/projectdiscovery/subfinder
 go get github.com/tomnomnom/assetfinder
-git clone git clone https://github.com/aboul3la/Sublist3r.git $1/sublist3r
+git clone https://github.com/aboul3la/Sublist3r.git $1/sublist3r
 go get github.com/lc/gau/v2/cmd/gau
 git clone https://github.com/maurosoria/dirsearch.git
 apt-get install build-essential git zlib1g-dev
