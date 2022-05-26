@@ -1,35 +1,37 @@
 
 if [ "$1" ];then
 
+cpwd=$PWD
+  if [ "$(uname -a | grep -E '(Kali|kali)')" ];
+  then
+    apt install assetfinder
+    apt install subfinder
+    apt install getallurls
+    apt install nmap
+    apt install dirsearch
+    apt install sslscan
+  else
+    apt install nmap
+    go install github.com/projectdiscovery/subfinder@latest
+    go install github.com/tomnomnom/assetfinder@latest
+    go install github.com/lc/gau/v2/cmd/gau@latest
+    apt-get install build-essential git zlib1g-dev
+    apt-get build-dep openssl
+    git clone https://github.com/maurosoria/dirsearch.git
+    git clone https://github.com/rbsec/sslscan
 
-if [ "$(uname -a | grep -E '(Kali|kali)')" ];
-then
-apt install assetfinder
-apt install subfinder
-apt install sublist3r
-apt install getallurls
-apt install nmap
-apt install dirsearch
-apt install sslscan
-else
-apt install nmap
-go get github.com/projectdiscovery/subfinder
-go get github.com/tomnomnom/assetfinder
-git clone https://github.com/aboul3la/Sublist3r.git $1/sublist3r
-go get github.com/lc/gau/v2/cmd/gau
-git clone https://github.com/maurosoria/dirsearch.git
-apt-get install build-essential git zlib1g-dev
-apt-get build-dep openssl
-git clone https://github.com/rbsec/sslscan
+  fi
+  
+  go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
+  go install https://github.com/tomnomnom/anew@latest
+  go install https://github.com/tomnomnom/gf@latest
+  go install github.com/003random/getJS@latest
+  cd $1
+  wget https://github.com/michenriksen/aquatone/releases/download/v1.7.0/aquatone_linux_amd64_1.7.0.zip;
+  unzip aquatone_linux_amd64_1.7.0.zip
+  ln -s $PWD/aquatone /usr/bin/aquatone
+  cd $cpwd;
 
-fi
-mkdir $1
-git clone https://github.com/michenriksen/aquatone $1/aquatone
-git clone https://github.com/projectdiscovery/nuclei $1/nuclei
-git clone https://github.com/tomnomnom/hacks/ $1/hacks
-git clone https://github.com/tomnomnom/anew $1/anew
-git clone https://github.com/tomnomnom/gf $1/gf
-git clone https://github.com/003random/getJS $1/getjs
 
 
 else
