@@ -5,15 +5,15 @@ Bug Bounty Recon Automation Tool
 
 
 ## Features :
-- Take Screenshots from subdomains ([Gowitness](https://github.com/sensepost/gowitness))
-- Get title and headers from subdomains ([Gowitness](https://github.com/sensepost/gowitness))
+- Take Screenshots from subdomains via @sensepost/gowitness
+- Get title and headers from subdomains via @sensepost/gowitness
 - General info about company and CIDRs
-- Network scan ([Nmap](https://github.com/nmap/nmap))
-- HTTP scan ([Nmap](https://github.com/nmap/nmap))
-- Get Wayback links and Grouping and separate vulnerable links with [Unfurl](https://github.com/tomnomnom/unfurl) and [GF](https://github.com/tomnomnom/gf)
-- Full scan with [Nuclei](https://github.com/projectdiscovery/nuclei)
-- Dirsearching with [Dirsearch](https://github.com/maurosoria/dirsearch)
-- Scan ssl with [SSLScan](https://github.com/rbsec/sslscan)
+- Network scan via @nmap/nmap
+- HTTP scan via @nmap/nmap
+- Collecting and separating archives urls via @tomnomnom/unfurl, @tomnomnom/gf, @lc/gau, @tomnomnom/waybackurls
+- Templated-based vulnerability scan with @projectdiscovery/nuclei
+- Directory fuzzing with @maurosoria/dirsearch
+- SSL scan with @rbsec/sslscan
 - Get all host IPs from subdomains
 
 ## Installation :
@@ -33,6 +33,3 @@ And for wildcard domains use :
 ./rauton.sh -wild apple.com
 ```
 ---
-Thanks : @silver_stone3
-
-**If you like tool please support me !**
