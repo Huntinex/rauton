@@ -1,5 +1,5 @@
 # Rauton
-Bug Bounty Recon Automation Tool
+A small bug bounty reconnaissance automation tool.
 
 ![ScreenShot](https://i.imgur.com/VCVWtQf.png)
 
@@ -10,26 +10,34 @@ Bug Bounty Recon Automation Tool
 - General info about company and CIDRs
 - Network scan via @nmap/nmap
 - HTTP scan via @nmap/nmap
-- Collecting and separating archives urls via @tomnomnom/unfurl, @tomnomnom/gf, @lc/gau, @tomnomnom/waybackurls
+- Collecting and separating archive urls via @tomnomnom/unfurl, @tomnomnom/gf, @lc/gau, @tomnomnom/waybackurls
 - Templated-based vulnerability scan with @projectdiscovery/nuclei
 - Directory fuzzing with @maurosoria/dirsearch
 - SSL scan with @rbsec/sslscan
 - Get all host IPs from subdomains
 
 ## Installation :
-1. Clone the repository with `git clone https://github.com/Huntinex/rauton`
-2. Run installation file `./install.sh`
-3. Edit the script `CONFIG` section and enter your `dirsearch_wordlist_path` .
+1. Clone the repository with the following command :
+```bash
+git clone https://github.com/Huntinex/rauton
+```
+
+2. Run the installation file : 
+```bash
+./install.sh
+```
+
+3. Edit the script configuration section and enter your `dirsearch_wordlist_path`.
 
 ## Usage :
-For single domains use :
+For a single domain use :
 ```bash
 ./rauton.sh -single apple.com
 # or (default mode is single)
 ./rauton.sh apple.com
 ```
+
 And for wildcard domains use :
 ```bash
 ./rauton.sh -wild apple.com
 ```
----
